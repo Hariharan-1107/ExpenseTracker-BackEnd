@@ -1,16 +1,17 @@
 package hariharan.tech.expensetracker.securityConfig;
 
-import hariharan.tech.expensetracker.services.JWTService;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
+import hariharan.tech.expensetracker.services.JWTService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class Oauth2LoginSucessHandler implements AuthenticationSuccessHandler {
@@ -26,7 +27,7 @@ public class Oauth2LoginSucessHandler implements AuthenticationSuccessHandler {
         String email = oAuth2User.getAttribute("email");
         String token = jwtService.generateToken(email);
         System.out.println("Token generated: " + token);
-        response.sendRedirect("http://localhost:3004/?token=" + token );
+        response.sendRedirect("https://expense-tracker-front-end-sage.vercel.app/?token=" + token );
     }
 
 }
