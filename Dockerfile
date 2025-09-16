@@ -1,5 +1,5 @@
-# Use OpenJDK 24 as base image
-FROM openjdk:24-jdk-slim as build
+# Use OpenJDK 21 as base image (LTS version)
+FROM openjdk:21-jdk-slim as build
 
 # Set working directory
 WORKDIR /app
@@ -23,7 +23,7 @@ COPY src src
 RUN ./mvnw clean package -DskipTests
 
 # Runtime stage
-FROM openjdk:24-jre-slim
+FROM openjdk:21-jre-slim
 
 # Set working directory
 WORKDIR /app
