@@ -1,11 +1,26 @@
-FROM maven:3.8.6-openjdk-17-slim as build
+# Use Maven with Java 17 for building
+FROM maven:3.9-eclipse-temurin-17 as build
 
 WORKDIR /app
-COPY . .
+
+# Copy pom.xml first for better caching
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+# Copy source and build
+COPY src ./src
 RUN mvn clean package -DskipTests
 
-FROM openjdk:17-jdk-slim
+# Runtime stage - use Java 17 JRE
+FROM eclipse-temurin:17-jre-jammy
+
 WORKDIR /app
+
+# Copy the jar from build stage
 COPY --from=build /app/target/*.jar app.jar
+
+# Expose port
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+# Run the application
+CMD ["java", "-jar", "app.jar"]
